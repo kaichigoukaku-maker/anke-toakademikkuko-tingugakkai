@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>現在地診断 | シリコンバレーコーチング・アカデミー</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  background: #fafafa;
+  color: #333;
+  line-height: 1.8;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+
+/* HEADER + PROGRESS */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky; top: 0; z-index: 10;
+}
+.header-in {
+  max-width: 700px;
+  margin: 0 auto;
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.header-logo {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2c5fa8;
+  letter-spacing: .05em;
+  line-height: 1.3;
+}
+.header-logo small {
+  display: block;
+  font-size: 10px;
+  color: #888;
+  font-weight: 600;
+  letter-spacing: .1em;
+  margin-top: 2px;
+}
+.header-step {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: .08em;
+  font-weight: 600;
+}
+.progress-track { height: 3px; background: #eee; }
+.progress-fill { height: 100%; background: #2c5fa8; width: 0%; transition: width .4s ease; }
+
+/* WRAP */
+.wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 40px 24px 60px;
+}
+
+/* HERO */
+.tag {
+  display: inline-block;
+  background: #ee7800;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 8px 20px;
+  margin-bottom: 16px;
+  letter-spacing: .05em;
+}
+h1 {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+  line-height: 1.5;
+  color: #222;
+  margin-bottom: 20px;
+}
+.lead {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 24px;
+}
+
+/* SCIENCE BLOCK (intro box matching LP) */
+.science-block {
+  background: #fff;
+  padding: 20px 22px;
+  margin: 24px 0 32px;
+  border: 1px solid #d8d8d8;
+}
+.science-block p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #333;
+}
+.science-block strong { color: #2c5fa8; }
+
+/* SECTION HEAD (matching LP) */
+.section-head {
+  font-size: 17px;
+  font-weight: 700;
+  color: #222;
+  margin: 40px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #2c5fa8;
+  line-height: 1.5;
+}
+
+/* QUESTION */
+.q { margin-bottom: 28px; }
+.q-head {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+}
+.q-num {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #2c5fa8;
+  padding: 3px 10px;
+  letter-spacing: .05em;
+  flex-shrink: 0;
+}
+.q-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.6;
+}
+.q-sub {
+  font-size: 12px;
+  color: #888;
+  margin: -4px 0 10px;
+}
+.req {
+  font-size: 10px;
+  color: #d04040;
+  border: 1px solid #d04040;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-weight: 700;
+}
+.opt-label {
+  font-size: 10px;
+  color: #aaa;
+  margin-left: 6px;
+  font-weight: 400;
+}
+
+/* INPUT */
+input[type="text"], input[type="number"], input[type="email"], textarea {
+  width: 100%;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  transition: border-color .2s;
+  color: #333;
+  line-height: 1.6;
+}
+input:focus, textarea:focus { border-color: #2c5fa8; }
+input::placeholder, textarea::placeholder { color: #bbb; }
+textarea { resize: vertical; min-height: 100px; }
+
+/* RADIO / CHECK (LP-flavored, blue accent) */
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  cursor: pointer;
+  transition: all .15s;
+  position: relative;
+  border-radius: 3px;
+}
+.opt:hover { border-color: #2c5fa8; background: #f8fafd; }
+.opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+.mark {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 2px solid #c0c0c0;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s;
+  border-radius: 50%;
+  background: #fff;
+}
+.opt.chk .mark { border-radius: 3px; }
+.mark-dot {
+  width: 8px; height: 8px;
+  background: #2c5fa8; border-radius: 50%;
+  opacity: 0; transform: scale(0.3);
+  transition: opacity .15s, transform .15s;
+}
+.opt.chk .mark-dot { border-radius: 1px; }
+.opt:has(input:checked) .mark { border-color: #2c5fa8; }
+.opt:has(input:checked) .mark-dot { opacity: 1; transform: scale(1); }
+.opt:has(input:checked) {
+  border-color: #2c5fa8;
+  background: #f5f8fc;
+}
+.opt-text { font-size: 14.5px; color: #333; }
+
+/* ERROR */
+.err { font-size: 12px; color: #d04040; margin-top: 6px; display: none; font-weight: 600; }
+.q.error .err { display: block; }
+.q.error input[type="text"],
+.q.error input[type="number"],
+.q.error input[type="email"],
+.q.error textarea { border-color: #d04040; }
+
+/* SUBMIT (CTA matching LP) */
+.submit-area {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #e5e5e5;
+}
+.submit-meta {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.9;
+}
+.cta-button {
+  display: block;
+  width: 100%;
+  background: #ffa41c;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 18px 24px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: .03em;
+  box-shadow: 0 3px 0 #d18810;
+  transition: all .15s;
+  position: relative;
+  font-family: inherit;
+}
+.cta-button:hover {
+  background: #f5961a;
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 #d18810;
+}
+.cta-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 3px 0 #d18810;
+}
+.cta-meta {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 10px;
+  font-weight: 700;
+}
+.spinner {
+  display: none;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  position: absolute;
+  right: 22px; top: 50%; transform: translateY(-50%);
+}
+.cta-button.loading .spinner { display: block; }
+@keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* RESULT SCREEN */
+#result-screen { display: none; }
+.result-tag {
+  display: inline-block;
+  background: #2c5fa8;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+  letter-spacing: .08em;
+}
+.result-title {
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  color: #222;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.result-sub {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.95;
+  margin-bottom: 32px;
+  white-space: pre-line;
+}
+
+/* Tickets (matching LP reason-item / book-block hybrid) */
+.tickets {
+  display: flex; flex-direction: column;
+  gap: 16px; margin-bottom: 28px;
+}
+.ticket {
+  background: #f5f8fc;
+  padding: 22px 22px 24px;
+  border-left: 3px solid #2c5fa8;
+  border-radius: 0 3px 3px 0;
+}
+.ticket.sub {
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  border-left: 3px solid #c0c0c0;
+}
+.ticket-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #2c5fa8;
+  padding: 4px 11px;
+  letter-spacing: .05em;
+  margin-bottom: 12px;
+}
+.ticket.sub .ticket-badge { background: #888; }
+.ticket-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.ticket-desc {
+  font-size: 13.5px;
+  color: #555;
+  line-height: 1.9;
+}
+
+/* Next step block */
+.next-step {
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  padding: 20px 22px;
+  font-size: 14px;
+  line-height: 1.95;
+  color: #444;
+  margin-bottom: 28px;
+}
+.next-step strong { color: #2c5fa8; font-weight: 700; }
+
+/* LINE button */
+.btn-line {
+  display: block;
+  background: #06C755;
+  color: #fff;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  padding: 18px;
+  text-decoration: none;
+  border-radius: 4px;
+  width: 100%;
+  letter-spacing: .04em;
+  transition: opacity .2s;
+  box-shadow: 0 3px 0 #04a847;
+}
+.btn-line:hover { opacity: .92; transform: translateY(1px); box-shadow: 0 2px 0 #04a847; }
+.line-note {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-top: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 12px;
+  color: #999;
+  background: #f0f0f0;
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 32px 20px 50px; }
+  .tag { font-size: 15px; padding: 7px 16px; }
+  .ticket { padding: 18px 18px 20px; }
+  .opt { padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-in">
+    <div class="header-logo">
+      シリコンバレーコーチング・アカデミー
+      <small>SELF-DIAGNOSIS</small>
+    </div>
+    <div class="header-step">参加前アンケート</div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+</header>
+
+<!-- FORM SCREEN -->
+<div id="form-screen">
+<div class="wrap">
+
+  <!-- HERO -->
+  <span class="tag">セミナー参加前アンケート</span>
+  <h1>あなたの現在地を<br>教えてください</h1>
+
+  <div class="science-block">
+    <p>科学的コーチングは、あなたの<strong>現在地</strong>から始まります。回答後、最適な参加形式をご案内します。所要時間：<strong>約3分</strong>。</p>
+  </div>
+
+  <form id="surveyForm" novalidate>
+
+    <!-- 基本情報 -->
+    <h2 class="section-head">基本情報</h2>
+
+    <div class="q" id="q1-block">
+      <div class="q-head"><span class="q-num">Q01</span><span class="q-text">お名前<span class="req">必須</span></span></div>
+      <input type="text" id="q1" placeholder="例：田中 太郎">
+      <div class="err">入力してください</div>
+    </div>
+
+    <div class="q" id="q2-block">
+      <div class="q-head"><span class="q-num">Q02</span><span class="q-text">年齢<span class="req">必須</span></span></div>
+      <div class="q-sub">数字のみ</div>
+      <input type="number" id="q2" placeholder="42" min="18" max="99" style="max-width:140px;">
+      <div class="err">年齢を入力してください</div>
+    </div>
+
+    <div class="q" id="q3-block">
+      <div class="q-head"><span class="q-num">Q03</span><span class="q-text">職業<span class="req">必須</span></span></div>
+      <input type="text" id="q3" placeholder="例：経営者、管理職、専門職、会社員">
+      <div class="err">入力してください</div>
+    </div>
+
+    <!-- 現在地診断 -->
+    <h2 class="section-head">現在地診断</h2>
+
+    <div class="q" id="q4-block">
+      <div class="q-head"><span class="q-num">Q04</span><span class="q-text">現在の主な活動形態は？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q4" value="経営者・役員"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">経営者・役員</span></label>
+        <label class="opt"><input type="radio" name="q4" value="管理職・マネージャー"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">管理職・マネージャー</span></label>
+        <label class="opt"><input type="radio" name="q4" value="会社員（一般職）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">会社員（一般職）</span></label>
+        <label class="opt"><input type="radio" name="q4" value="個人事業主・フリーランス"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">個人事業主・フリーランス</span></label>
+        <label class="opt"><input type="radio" name="q4" value="専門職（士業・医療・研究等）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">専門職（士業・医療・研究等）</span></label>
+        <label class="opt"><input type="radio" name="q4" value="その他"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">その他</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q5-block">
+      <div class="q-head"><span class="q-num">Q05</span><span class="q-text">今、最も「伸ばしたい・整えたい」と感じている領域は？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q5" value="自己理解・在り方（自分の軸・覚悟）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">自己理解・在り方（自分の軸・覚悟）</span></label>
+        <label class="opt"><input type="radio" name="q5" value="思考力・意思決定（戦略・判断）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">思考力・意思決定（戦略・判断）</span></label>
+        <label class="opt"><input type="radio" name="q5" value="メンタル・集中（ストレス耐性・感情管理）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">メンタル・集中（ストレス耐性・感情管理）</span></label>
+        <label class="opt"><input type="radio" name="q5" value="行動・習慣（実行力・継続力）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">行動・習慣（実行力・継続力）</span></label>
+        <label class="opt"><input type="radio" name="q5" value="関係性・影響力（部下・同僚・家族との関わり）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">関係性・影響力（部下・同僚・家族との関わり）</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q6-block">
+      <div class="q-head"><span class="q-num">Q06</span><span class="q-text">朝起きた瞬間、自分の状態をどう感じますか？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q6" value="力が湧いている／前に進める"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">力が湧いている／前に進める</span></label>
+        <label class="opt"><input type="radio" name="q6" value="普通／特に不調はない"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">普通／特に不調はない</span></label>
+        <label class="opt"><input type="radio" name="q6" value="重い／立ち上がるのに時間がかかる"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">重い／立ち上がるのに時間がかかる</span></label>
+        <label class="opt"><input type="radio" name="q6" value="疲れが抜けていない／常に消耗している"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">疲れが抜けていない／常に消耗している</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q7-block">
+      <div class="q-head"><span class="q-num">Q07</span><span class="q-text">「自分の軸」に手応えがありますか？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q7" value="揺るがない軸がある"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">揺るがない軸がある</span></label>
+        <label class="opt"><input type="radio" name="q7" value="ある程度は整っている"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">ある程度は整っている</span></label>
+        <label class="opt"><input type="radio" name="q7" value="揺らぎやすい／場面による"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">揺らぎやすい／場面による</span></label>
+        <label class="opt"><input type="radio" name="q7" value="軸そのものが曖昧だと感じている"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">軸そのものが曖昧だと感じている</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q8-block">
+      <div class="q-head"><span class="q-num">Q08</span><span class="q-text">この1年、続かなかった習慣は？<span class="req">必須</span><span class="opt-label">複数選択可</span></span></div>
+      <div class="opts">
+        <label class="opt chk"><input type="checkbox" name="q8" value="運動・トレーニング"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">運動・トレーニング</span></label>
+        <label class="opt chk"><input type="checkbox" name="q8" value="食事・栄養管理"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">食事・栄養管理</span></label>
+        <label class="opt chk"><input type="checkbox" name="q8" value="睡眠・生活リズム"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">睡眠・生活リズム</span></label>
+        <label class="opt chk"><input type="checkbox" name="q8" value="学習・読書"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">学習・読書</span></label>
+        <label class="opt chk"><input type="checkbox" name="q8" value="内省・振り返り"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">内省・振り返り</span></label>
+        <label class="opt chk"><input type="checkbox" name="q8" value="特にない"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">特にない</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q9-block">
+      <div class="q-head"><span class="q-num">Q09</span><span class="q-text">最も消耗している原因は何ですか？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q9" value="仕事の量・責任"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">仕事の量・責任</span></label>
+        <label class="opt"><input type="radio" name="q9" value="人間関係（家庭・職場）"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">人間関係（家庭・職場）</span></label>
+        <label class="opt"><input type="radio" name="q9" value="将来への不安"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">将来への不安</span></label>
+        <label class="opt"><input type="radio" name="q9" value="自分への納得感のなさ"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">自分への納得感のなさ</span></label>
+        <label class="opt"><input type="radio" name="q9" value="身体的な不調"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">身体的な不調</span></label>
+        <label class="opt"><input type="radio" name="q9" value="わからない／言語化できていない"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">わからない／言語化できていない</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q10-block">
+      <div class="q-head"><span class="q-num">Q10</span><span class="q-text">シリコンバレーコーチング・アカデミーに期待することは？<span class="req">必須</span><span class="opt-label">複数選択可</span></span></div>
+      <div class="opts">
+        <label class="opt chk"><input type="checkbox" name="q10" value="自分の現在地を客観的に知りたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">自分の現在地を客観的に知りたい</span></label>
+        <label class="opt chk"><input type="checkbox" name="q10" value="科学的・再現性のあるコーチングを学びたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">科学的・再現性のあるコーチングを学びたい</span></label>
+        <label class="opt chk"><input type="checkbox" name="q10" value="大学発のメソッドを実生活で使いたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">大学発のメソッドを実生活で使いたい</span></label>
+        <label class="opt chk"><input type="checkbox" name="q10" value="経営学×心理学×コーチングの融合を理解したい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">経営学×心理学×コーチングの融合を理解したい</span></label>
+        <label class="opt chk"><input type="checkbox" name="q10" value="本気で人生を変えたい・伴走者がほしい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">本気で人生を変えたい・伴走者がほしい</span></label>
+        <label class="opt chk"><input type="checkbox" name="q10" value="同じ志の仲間とつながりたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">同じ志の仲間とつながりたい</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <div class="q" id="q11-block">
+      <div class="q-head"><span class="q-num">Q11</span><span class="q-text">変化に投じられるエネルギー（時間・費用）は？<span class="req">必須</span></span></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q11" value="今すぐ動ける／本気で取り組みたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">今すぐ動ける／本気で取り組みたい</span></label>
+        <label class="opt"><input type="radio" name="q11" value="条件が合えば前向きに検討したい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">条件が合えば前向きに検討したい</span></label>
+        <label class="opt"><input type="radio" name="q11" value="情報収集から始めたい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">情報収集から始めたい</span></label>
+        <label class="opt"><input type="radio" name="q11" value="今はまだ様子を見たい"><span class="mark"><span class="mark-dot"></span></span><span class="opt-text">今はまだ様子を見たい</span></label>
+      </div>
+      <div class="err">選択してください</div>
+    </div>
+
+    <!-- 自由記述 -->
+    <h2 class="section-head">自由記述</h2>
+
+    <div class="q" id="q12-block">
+      <div class="q-head"><span class="q-num">Q12</span><span class="q-text">半年後、どんな状態になっていたいですか？<span class="opt-label">任意</span></span></div>
+      <textarea id="q12" placeholder="自由に記述してください"></textarea>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+      <p class="submit-meta">回答後、あなたへの最適な参加形式をご案内します</p>
+      <button type="submit" class="cta-button" id="submitBtn">
+        診断を送信する
+        <div class="spinner"></div>
+      </button>
+      <div class="cta-meta">所要時間 約3分・無料</div>
+    </div>
+
+  </form>
+
+</div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result-screen">
+<div class="wrap">
+  <span class="result-tag">DIAGNOSIS COMPLETE</span>
+  <h2 class="result-title" id="result-title"></h2>
+  <p class="result-sub" id="result-sub"></p>
+
+  <div class="tickets" id="result-tickets"></div>
+
+  <div class="next-step" id="result-action"></div>
+
+  <a href="https://line.me/R/ti/p/@468kttez" class="btn-line" target="_blank">LINEで次のステップへ進む</a>
+  <p class="line-note">※ LINEにて詳細をご案内します</p>
+</div>
+</div>
+
+<footer>
+  © シリコンバレーコーチング・アカデミー
+</footer>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwjt0xwEQXn5UuaY0oXDdE8AUV5FJqc0McbNWFyJ-MK_JlJSvCQESV2fbu-oID0qz-J/exec";
+
+let lineUserId = "";
+liff.init({ liffId: "2010124583-IBwmemDj" }).then(() => {
+  if (liff.isLoggedIn()) {
+    liff.getProfile().then(profile => {
+      lineUserId = profile.userId;
+    });
+  } else {
+    liff.login();
+  }
+}).catch(err => console.warn("LIFF init error:", err));
+
+// PROGRESS
+function updateProgress(){
+  const total = 11;
+  let filled = 0;
+  if(document.getElementById('q1').value.trim()) filled++;
+  if(document.getElementById('q2').value.trim()) filled++;
+  if(document.getElementById('q3').value.trim()) filled++;
+  ['q4','q5','q6','q7','q9','q11'].forEach(n=>{
+    if(document.querySelector(`input[name="${n}"]:checked`)) filled++;
+  });
+  ['q8','q10'].forEach(n=>{
+    if(document.querySelector(`input[name="${n}"]:checked`)) filled++;
+  });
+  document.getElementById('progressBar').style.width = Math.round(filled/total*100)+'%';
+}
+document.addEventListener('input', updateProgress);
+document.addEventListener('change', updateProgress);
+
+// VALIDATE
+function validate(){
+  let ok = true;
+  const checks = [
+    {id:'q1-block', fn:()=>document.getElementById('q1').value.trim()},
+    {id:'q2-block', fn:()=>{const v=document.getElementById('q2').value; return v&&+v>=18&&+v<=99;}},
+    {id:'q3-block', fn:()=>document.getElementById('q3').value.trim()},
+    {id:'q4-block', fn:()=>document.querySelector('input[name="q4"]:checked')},
+    {id:'q5-block', fn:()=>document.querySelector('input[name="q5"]:checked')},
+    {id:'q6-block', fn:()=>document.querySelector('input[name="q6"]:checked')},
+    {id:'q7-block', fn:()=>document.querySelector('input[name="q7"]:checked')},
+    {id:'q8-block', fn:()=>document.querySelector('input[name="q8"]:checked')},
+    {id:'q9-block', fn:()=>document.querySelector('input[name="q9"]:checked')},
+    {id:'q10-block', fn:()=>document.querySelector('input[name="q10"]:checked')},
+    {id:'q11-block', fn:()=>document.querySelector('input[name="q11"]:checked')},
+  ];
+  checks.forEach(c=>{
+    const el = document.getElementById(c.id);
+    if(c.fn()){ el.classList.remove('error'); }
+    else{ el.classList.add('error'); ok=false; }
+  });
+  if(!ok) document.querySelector('.error')?.scrollIntoView({behavior:'smooth',block:'center'});
+  return ok;
+}
+
+function getTicket(q11){
+  return (q11==='今すぐ動ける／本気で取り組みたい'||q11==='条件が合えば前向きに検討したい') ? 'casual' : 'seminar';
+}
+
+function collectData(){
+  const q11 = document.querySelector('input[name="q11"]:checked')?.value||'';
+  return {
+    timestamp: new Date().toLocaleString('ja-JP'),
+    name: document.getElementById('q1').value.trim(),
+    age: document.getElementById('q2').value.trim(),
+    job: document.getElementById('q3').value.trim(),
+    q4: document.querySelector('input[name="q4"]:checked')?.value||'',
+    q5: document.querySelector('input[name="q5"]:checked')?.value||'',
+    q6: document.querySelector('input[name="q6"]:checked')?.value||'',
+    q7: document.querySelector('input[name="q7"]:checked')?.value||'',
+    q8: [...document.querySelectorAll('input[name="q8"]:checked')].map(e=>e.value).join(' / '),
+    q9: document.querySelector('input[name="q9"]:checked')?.value||'',
+    q10: [...document.querySelectorAll('input[name="q10"]:checked')].map(e=>e.value).join(' / '),
+    q11, q12: document.getElementById('q12').value.trim(),
+    ticket_type: getTicket(q11),
+    uid: lineUserId,
+  };
+}
+
+function showResult(d){
+  document.getElementById('form-screen').style.display='none';
+  document.getElementById('result-screen').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  document.getElementById('result-title').textContent = `${d.name}さん、ありがとうございます`;
+  document.getElementById('result-sub').textContent =
+    'アンケートへのご回答ありがとうございました。\nあなたは以下のメニューにご参加いただけます。\nLINEにて希望のメニューをお知らせください。';
+
+  document.getElementById('result-tickets').innerHTML = `
+    <div class="ticket">
+      <span class="ticket-badge">メニュー 01</span>
+      <div class="ticket-name">カジュアル面談</div>
+      <div class="ticket-desc">
+        1on1 ／ 30〜45分 ／ 無料<br>
+        コーチと現在地を整理し、次の一手を一緒に設計します。
+      </div>
+    </div>
+    <div class="ticket">
+      <span class="ticket-badge">メニュー 02</span>
+      <div class="ticket-name">無料ウェブセミナー</div>
+      <div class="ticket-desc">
+        オンライン ／ 60分 ／ 無料 ／ 先着50名<br>
+        大学発・科学的コーチングのエッセンスをライブで学びます。教科書『コーチングの教科書 決定版 エッセンシャルズ』も特典としてプレゼント。
+      </div>
+    </div>`;
+
+  document.getElementById('result-action').innerHTML =
+    '下のボタンからLINEを追加し、<strong>「カジュアル面談」または「セミナー」</strong>とメッセージを送ってください。折り返しご案内します。';
+}
+
+document.getElementById('surveyForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!validate()) return;
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading'); btn.disabled=true;
+  const data = collectData();
+  try{
+    if(GAS_URL && GAS_URL!=='YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+      await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    }
+  }catch(err){console.warn(err);}
+  setTimeout(()=>showResult(data), 500);
+});
+</script>
+
+</body>
+</html>
